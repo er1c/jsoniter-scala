@@ -1645,7 +1645,7 @@ final class JsonReader private[jsoniter_scala](
   }
 
   private[this] def addExp(e2: Int, e10: Int): Int =
-    (e10 * 14267572527L >> 32).toInt + e2 + 1 // (e10 * Math.log(10) / Math.log(2)).toInt + e2 + 1
+    (e10 * 108853 >> 15) + e2 + 1 // (e10 * Math.log(10) / Math.log(2)).toInt + e2 + 1
 
   private[this] def parseBigInt(isToken: Boolean, default: BigInt, digitsLimit: Int): BigInt = {
     var b =
@@ -1868,7 +1868,7 @@ final class JsonReader private[jsoniter_scala](
       x = x * 10 + (buf(pos) - '0')
       pos += 1
     }
-    val lastWord = ((len * 445861642L) >>> 32).toInt // (len * log(10) / log (1L << 32)).toInt
+    val lastWord = ((len * 445861642L) >>> 32).toInt // (len * Math.log(10) / Math.log(1L << 32)).toInt
     val numWords = lastWord + 1
     val magWords = new Array[Int](numWords)
     magWords(lastWord) = x.toInt
@@ -2362,7 +2362,7 @@ final class JsonReader private[jsoniter_scala](
     })
 
   private[this] def dayOfYearForYearMonth(year: Int, month: Int): Int =
-    ((month * 367 - 362) / 12) -
+    ((month * 1002277 - 988622) >> 15) - // (month * 367 - 362) / 12
       (if (month <= 2) 0
       else if (isLeap(year)) 1
       else 2)
